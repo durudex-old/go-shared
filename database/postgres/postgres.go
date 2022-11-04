@@ -17,7 +17,7 @@ import (
 )
 
 // Postgres driver interface.
-type Postgres interface {
+type Driver interface {
 	// Begin acquires a connection from the Pool and starts a transaction. Unlike database/sql, the
 	// context only affects the begin command. i.e. there is no auto-rollback on context cancellation.
 	// Begin initiates a transaction block without explicitly setting a transaction mode for the block
@@ -73,7 +73,7 @@ func (c *PoolConfig) Configure(cfg *pgxpool.Config) {
 	}
 
 	// Setting the max and min number postgres driver connections.
-	if cfg.MaxConns < 1 {
+	if cfg.MaxConns > 1 {
 		cfg.MaxConns, cfg.MinConns = c.MaxConns, c.MinConns
 	}
 }
