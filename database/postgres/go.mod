@@ -1,4 +1,4 @@
-module github.com/go-shared/database/postgres
+module github.com/durudex/go-shared/database/postgres
 
 go 1.19
 
