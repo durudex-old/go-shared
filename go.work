@@ -1,3 +1,6 @@
 go 1.19
 
-use ./database/postgres
+use (
+	./database/postgres
+	./status
+)
