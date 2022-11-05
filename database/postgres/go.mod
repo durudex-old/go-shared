@@ -2,7 +2,11 @@ module github.com/durudex/go-shared/database/postgres
 
 go 1.19
 
-require github.com/jackc/pgx/v5 v5.0.4
+require (
+	github.com/durudex/go-shared/status v0.0.0-20221105154206-d55379f7523f
+	github.com/jackc/pgerrcode v0.0.0-20220416144525-469b46aa5efa
+	github.com/jackc/pgx/v5 v5.0.4
+)
 
 require (
 	github.com/jackc/pgpassfile v1.0.0 // indirect
