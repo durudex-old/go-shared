@@ -4,4 +4,5 @@ use (
 	./crypto/tls
 	./database/postgres
 	./status
+	./transport/grpc
 )

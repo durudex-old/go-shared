@@ -17,10 +17,25 @@ import (
 // ErrAppendCerts is returned when certificates are incorrectly parsed and appended.
 var ErrAppendCerts = errors.New("error append certificates from PEM files")
 
+// PathConfig stores certificate paths used to create TLS configuration.
+type PathConfig struct {
+	// Enable indicates the usage status of this configuration.
+	Enable bool
+
+	// CA path to the PEM file.
+	Ca string
+
+	// Cert path to the PEM file.
+	Cert string
+
+	// Key path to the PEM file.
+	Key string
+}
+
 // LoadConfig returns the TLS configuration that was extracted from the PEM certificate files.
-func LoadConfig(ca, cert, key string) (*tls.Config, error) {
+func LoadConfig(cfg PathConfig) (*tls.Config, error) {
 	// Reading CA certificate file.
-	f, err := os.ReadFile(ca)
+	b, err := os.ReadFile(cfg.Ca)
 	if err != nil {
 		return nil, err
 	}
@@ -28,12 +43,12 @@ func LoadConfig(ca, cert, key string) (*tls.Config, error) {
 	// Creating a new certification pool.
 	pool := x509.NewCertPool()
 	// Appends certificates from PEM files.
-	if !pool.AppendCertsFromPEM(f) {
+	if !pool.AppendCertsFromPEM(b) {
 		return nil, ErrAppendCerts
 	}
 
 	// Analytic public/private key pair from a pair of files.
-	certificate, err := tls.LoadX509KeyPair(cert, key)
+	certificate, err := tls.LoadX509KeyPair(cfg.Cert, cfg.Key)
 	if err != nil {
 		return nil, err
 	}
