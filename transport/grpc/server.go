@@ -8,6 +8,7 @@
 package grpc
 
 import (
+	"context"
 	"net"
 
 	"github.com/durudex/go-shared/crypto/tls"
@@ -84,6 +85,9 @@ func (s *Server) Run() {
 func GetServerOptions(cfg tls.PathConfig) ([]grpc.ServerOption, error) {
 	var opts []grpc.ServerOption
 
+	// Sets default options.
+	opts = append(opts, grpc.UnaryInterceptor(UnaryInterceptor))
+
 	// Check if TLS is enabled.
 	if cfg.Enable {
 		// Loading TLS configuration from certificate files.
@@ -96,4 +100,15 @@ func GetServerOptions(cfg tls.PathConfig) ([]grpc.ServerOption, error) {
 	}
 
 	return opts, nil
+}
+
+// UnaryInterceptor is called as a wrapper between the request and the handler.
+func UnaryInterceptor(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
+	// Using a handler to complete a unary request.
+	h, err := handler(ctx, req)
+	if err != nil {
+		return h, ServerErrorHandler(err)
+	}
+
+	return h, nil
 }
