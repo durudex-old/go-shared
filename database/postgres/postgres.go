@@ -16,7 +16,7 @@ import (
 	"github.com/jackc/pgx/v5/tracelog"
 )
 
-// Postgres driver interface.
+// Driver contains methods that can be used by the client.
 type Driver interface {
 	// Begin acquires a connection from the Pool and starts a transaction. Unlike database/sql, the
 	// context only affects the begin command. i.e. there is no auto-rollback on context cancellation.
@@ -49,21 +49,21 @@ type Driver interface {
 	Close()
 }
 
-// Postgres pool driver config structure.
+// PoolConfig stores configurations for connecting and working with the database.
 type PoolConfig struct {
-	// The full URL to connect to the database. It may also contain some configurations to create
-	// a connection.
+	// URL is used to establish a connection to the database, and it may also contain some
+	// connection configuration.
 	URL string
 
-	// The maximum and minimum number of pool connections to the database. Without a specified
+	// MaxConns and MinConns number of pool connections to the database. Without a specified
 	// value, the pgx settings will be used.
 	MaxConns, MinConns int32
 
-	// Implementation of the logger that will be used by the driver.
+	// Logger implementation that will be used by the driver.
 	Logger tracelog.Logger
 }
 
-// Configuring the postgres driver to connect to the database.
+// Configure the postgres driver to connect to the database.
 func (c *PoolConfig) Configure(cfg *pgxpool.Config) {
 	// Setting the logger for the driver.
 	if c.Logger != nil {
@@ -78,7 +78,7 @@ func (c *PoolConfig) Configure(cfg *pgxpool.Config) {
 	}
 }
 
-// Creating a new postgres pool connection.
+// NewPool returns a new postgres driver connection pool.
 func NewPool(cfg *PoolConfig) (*pgxpool.Pool, error) {
 	// Parsing database url from configuration.
 	config, err := pgxpool.ParseConfig(cfg.URL)

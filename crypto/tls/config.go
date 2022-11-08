@@ -23,7 +23,7 @@ type PathConfig struct {
 	Enable bool
 
 	// CA path to the PEM file.
-	Ca string
+	CA string
 
 	// Cert path to the PEM file.
 	Cert string
@@ -35,7 +35,7 @@ type PathConfig struct {
 // LoadConfig returns the TLS configuration that was extracted from the PEM certificate files.
 func LoadConfig(cfg PathConfig) (*tls.Config, error) {
 	// Reading CA certificate file.
-	b, err := os.ReadFile(cfg.Ca)
+	b, err := os.ReadFile(cfg.CA)
 	if err != nil {
 		return nil, err
 	}

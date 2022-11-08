@@ -17,7 +17,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-// Handler of errors that may occur when working with the database.
+// ErrorHandler handles of errors that may occur when working with the database.
 func ErrorHandler(err error, object string) error {
 	// Checking for pgx driver error.
 	if errors.Is(err, pgx.ErrNoRows) {

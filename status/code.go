@@ -7,19 +7,19 @@
 
 package status
 
-// Status code key used in error codes.
+// StatusCode is used as a key for error codes.
 type StatusCode int
 
 const (
-	// Status code used for internal server errors.
+	// CodeInternal indicates an internal server error.
 	CodeInternal StatusCode = iota
 
-	// Status code used for not found errors.
+	// CodeNotFound indicates a not found error.
 	CodeNotFound
 
-	// Status code used for already exists errors.
+	// CodeAlreadyExists indicates errors that already exist.
 	CodeAlreadyExists
 
-	// Status code used for invalid argument errors.
+	// CodeInvalidArgument indicates an invalid argument error.
 	CodeInvalidArgument
 )
